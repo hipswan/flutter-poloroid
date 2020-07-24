@@ -39,6 +39,7 @@ dependencies:
   image: ^2.0.7
   cached_network_image:
   flutter_svg:
+  animator: 0.1.4
   path_provider: ^0.5.0+1
   
   

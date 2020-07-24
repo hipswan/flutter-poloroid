@@ -6,8 +6,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:poloroid/models/user.dart';
 import 'package:poloroid/pages/upload.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:poloroid/pages/create_account.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final StorageReference storageRef = FirebaseStorage.instance.ref();
