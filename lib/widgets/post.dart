@@ -237,12 +237,12 @@ class _PostState extends State<Post> {
                   tween: Tween(begin: 0.8, end: 1.4),
                   curve: Curves.elasticOut,
                   cycles: 0,
-                  builder: (anim) => Transform.scale(
+                  builder: (context, anim, _) => Transform.scale(
                     scale: anim.value,
                     child: Icon(
                       Icons.favorite,
                       size: 80.0,
-                      color: Colors.red,
+                      color: Colors.white38,
                     ),
                   ),
                 )
