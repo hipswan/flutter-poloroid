@@ -1,6 +1,6 @@
 # poloroid
 
-A new Flutter project.
+Never get short of the best moments Post It!!.
 
 ## Getting Started
 
