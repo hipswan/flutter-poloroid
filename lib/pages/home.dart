@@ -1,9 +1,21 @@
+import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:poloroid/models/user.dart';
+import 'package:poloroid/pages/upload.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:poloroid/pages/create_account.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
+final StorageReference storageRef = FirebaseStorage.instance.ref();
+final usersRef = Firestore.instance.collection('users');
+final postsRef = Firestore.instance.collection('posts');
+
+final DateTime timestamp = DateTime.now();
+User currentUser;
 
 class Home extends StatefulWidget {
   @override
@@ -12,6 +24,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
   bool isAuth = false;
   PageController pageController;
   int pageIndex = 0;
@@ -36,10 +49,39 @@ class _HomeState extends State<Home> {
 
   handleSignIn(GoogleSignInAccount account) async {
     if (account != null) {
+      await createUserInFirestore();
+      setState(() {
+        isAuth = true;
+      });
     } else {
       setState(() {
         isAuth = false;
       });
+    }
+  }
+
+  createUserInFirestore() async {
+    // 1) check if user exists in users collection in database (according to their id)
+    final GoogleSignInAccount user = googleSignIn.currentUser;
+    DocumentSnapshot doc = await usersRef.document(user.id).get();
+
+    if (!doc.exists) {
+      // 2) if the user doesn't exist, then we want to take them to the create account page
+      final username = await Navigator.push(
+          context, MaterialPageRoute(builder: (context) => CreateAccount()));
+
+      // 3) get username from create account, use it to make new user document in users collection
+      usersRef.document(user.id).setData({
+        "id": user.id,
+        "username": username,
+        "photoUrl": user.photoUrl,
+        "email": user.email,
+        "displayName": user.displayName,
+        "bio": "",
+        "timestamp": timestamp
+      });
+      // make new user their own follower (to include their posts in their timeline)
+
     }
   }
 
@@ -75,7 +117,9 @@ class _HomeState extends State<Home> {
     return Scaffold(
       key: _scaffoldKey,
       body: PageView(
-        children: <Widget>[],
+        children: <Widget>[
+          Upload(currentUser: currentUser),
+        ],
         controller: pageController,
         onPageChanged: onPageChanged,
         physics: NeverScrollableScrollPhysics(),
