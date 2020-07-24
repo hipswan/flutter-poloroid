@@ -6,6 +6,7 @@ import 'package:poloroid/pages/post_screen.dart';
 import 'package:poloroid/pages/profile.dart';
 import 'package:poloroid/widgets/header.dart';
 import 'package:poloroid/widgets/progress.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class ActivityFeed extends StatefulWidget {
   @override
@@ -165,7 +166,7 @@ class ActivityFeedItem extends StatelessWidget {
             backgroundImage: CachedNetworkImageProvider(userProfileImg),
           ),
           subtitle: Text(
-            "time left",
+            timeago.format(timestamp.toDate()),
             overflow: TextOverflow.ellipsis,
           ),
           trailing: mediaPreview,

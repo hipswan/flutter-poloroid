@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:poloroid/pages/home.dart';
 import 'package:poloroid/widgets/header.dart';
 import 'package:poloroid/widgets/progress.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class Comments extends StatefulWidget {
   final String postId;
@@ -140,7 +141,7 @@ class Comment extends StatelessWidget {
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(avatarUrl),
           ),
-          subtitle: Text("time left"),
+          subtitle: Text(timeago.format(timestamp.toDate())),
         ),
         Divider(),
       ],

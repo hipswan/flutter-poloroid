@@ -5,7 +5,7 @@ AppBar header(context,
   return AppBar(
     automaticallyImplyLeading: removeBackButton ? false : true,
     title: Text(
-      isAppTitle ? "fluttersocial" : titleText,
+      isAppTitle ? "poloroid" : titleText,
       style: TextStyle(
         color: Colors.white,
         fontFamily: isAppTitle ? "Signatra" : "",
